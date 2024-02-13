@@ -1,6 +1,8 @@
 import {MongoClient, ServerApiVersion} from "mongodb";
-const uname = process.env.VITE_MONGO_USER;
-const pwd = process.env.VITE_MONGO_PWD;
+
+let dotenv = require('dotenv').config()
+const uname =process.env.MONGO_USER
+const pwd = process.env.MONGO_PWD
 
 const uri = `mongodb+srv://${uname}:${pwd}@cluster0.impkuwn.mongodb.net/?retryWrites=true&w=majority`;
 
