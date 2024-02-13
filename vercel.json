@@ -1,7 +1,7 @@
 {
   "functions": {
     "app.ts": {
-      "memory": 1024,
+      "memory": 1024
     }
   },
   "rewrites": [
