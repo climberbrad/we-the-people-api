@@ -150,4 +150,6 @@ connections.forEach((curr: any) => {
 });
 
 
-module.exports = {app, Server}
+// module.exports = {app, Server}
+// Export the Express API
+module.exports = app;
