@@ -1,18 +1,18 @@
 import {Request, Response, Express} from "express";
 import express from 'express'
-import database from "./Database/dbConfig";
+import database from "../Database/dbConfig";
 import {WithId, Document} from "mongodb";
 import bodyParser from "body-parser";
 
 const cors = require('cors');
-const app: Express = express();
+const index: Express = express();
 
-app.use(cors());
-app.use(express.json())
+index.use(cors());
+index.use(express.json())
 
 var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({extended: false})
-app.use(urlencodedParser)
+index.use(urlencodedParser)
 
 const PORT: Number = 3000;
 const Root: "/" = "/";
@@ -45,14 +45,14 @@ interface Vote extends WithId<Document> {
 }
 
 // Route.
-app.get(Root, async (req: Request, res: Response) => {
+index.get(Root, async (req: Request, res: Response) => {
     res.json({
         data: 'success',
         Type: true,
     });
 })
 
-app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
+index.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     try {
         const collectionName = "polls";
@@ -65,7 +65,7 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     }
 })
 
-app.get(`${baseUrl}/polls/:id`, async (req: Request, res: Response) => {
+index.get(`${baseUrl}/polls/:id`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     const pollId = req.params.id
     try {
@@ -79,7 +79,7 @@ app.get(`${baseUrl}/polls/:id`, async (req: Request, res: Response) => {
     }
 })
 
-app.post(`${baseUrl}/polls`, async (req: Request, res: Response) => {
+index.post(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     // res.setHeader('Content-Type', 'application/json');
     try {
         const newPoll: Poll = req.body as Poll;
@@ -94,7 +94,7 @@ app.post(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     }
 })
 
-app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
+index.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     try {
         const collectionName = "votes";
@@ -107,7 +107,7 @@ app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     }
 })
 
-app.post(`${baseUrl}/votes`, async (req: Request, res: Response) => {
+index.post(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     // res.setHeader('Content-Type', 'application/json');
     try {
         const newVote: Vote = req.body as Vote;
@@ -122,7 +122,7 @@ app.post(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     }
 })
 
-let Server = app.listen(PORT, () => {
+let Server = index.listen(PORT, () => {
     console.log("We the people API is now running on port " + PORT);
 });
 
@@ -143,4 +143,4 @@ connections.forEach((curr: any) => {
 });
 
 
-module.exports = {app, Server}
+module.exports = {app: index, Server}

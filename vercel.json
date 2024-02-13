@@ -1,13 +1,3 @@
 {
-  "functions": {
-    "app.ts": {
-      "memory": 1024
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "app.ts"
-    }
-  ]
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
 }
