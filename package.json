@@ -8,7 +8,7 @@
   },
   "private": "true",
   "scripts": {
-    "start": "npm start",
+    "start": "npx tsc && nodemon dist/app.js",
     "build": "npx tsc",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.js\" ",
     "test": "jest --watchAll --detectOpenHandles --verbose"
