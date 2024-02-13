@@ -2,7 +2,7 @@ import {Request, Response, Express} from "express";
 import express from 'express'
 import {WithId, Document} from "mongodb";
 import bodyParser from "body-parser";
-import database from "../Database/dbConfig";
+import database from "./Database/dbConfig";
 
 const cors = require('cors');
 const app: Express = express();
@@ -46,6 +46,9 @@ interface Vote extends WithId<Document> {
 
 // Route.
 app.get(Root, async (req: Request, res: Response) => {
+    console.log('here')
+    res.status(200)
+    res.setHeader('Content-Type', 'application/json');
     res.json({
         data: 'success',
         Type: true,
@@ -53,7 +56,9 @@ app.get(Root, async (req: Request, res: Response) => {
 })
 
 app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
+    console.log('here')
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     try {
         const collectionName = "polls";
         const collection = database.collection(collectionName);
@@ -67,6 +72,7 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
 
 app.get(`${baseUrl}/polls/:id`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     const pollId = req.params.id
     try {
         const collectionName = "polls";
@@ -96,6 +102,7 @@ app.post(`${baseUrl}/polls`, async (req: Request, res: Response) => {
 
 app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     try {
         const collectionName = "votes";
         const collection = database.collection(collectionName);
