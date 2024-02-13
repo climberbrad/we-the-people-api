@@ -2,7 +2,7 @@
   "name": "we-the-people-api",
   "version": "1.1.1",
   "description": "The API which serves the we-the-people website",
-  "main": "app.js",
+  "main": "app.ts",
   "bin": {
     "create-express": "./bin/createExpress.js"
   },
