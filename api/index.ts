@@ -28,15 +28,17 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     console.log('here')
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-    try {
-        const collectionName = "polls";
-        const collection = database.collection(collectionName);
-        const posts = await (collection.find().toArray()) as Poll[];
 
-        res.status(200).send(JSON.stringify(posts, null, 3))
-    } catch {
-        console.log('error')
-    }
+    res.status(200).send(JSON.stringify({name: 'brad', test: 'please'}, null, 3))
+    // try {
+    //     const collectionName = "polls";
+    //     const collection = database.collection(collectionName);
+    //     const posts = await (collection.find().toArray()) as Poll[];
+    //
+    //     res.status(200).send(JSON.stringify(posts, null, 3))
+    // } catch {
+    //     console.log('error')
+    // }
 })
 
 app.listen(3000, () => {
