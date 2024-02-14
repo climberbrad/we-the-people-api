@@ -52,7 +52,7 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     // res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
     try {
         await client.connect();
-        await client.db("admin").command({ ping: 1 });
+        await client.db("we-the-people").command({ ping: 1 });
         // const collectionName = "polls";
         // const collection = database.collection(collectionName);
         // const posts = await (collection.find().toArray()) as Poll[];
