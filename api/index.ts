@@ -48,6 +48,7 @@ app.get("/", (req, res) => {
 const baseUrl = '/api/v1';
 app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
+    res.status(200).send(JSON.stringify({name: 'brad', test: 'success'}, null, 3))
 
     // res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
     // try {
@@ -61,7 +62,6 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     // } catch (e) {
     //     throw new Error('Unable to connect to mongo' + e)
     // }
-    res.status(200).send(JSON.stringify({name: 'brad', test: 'success'}, null, 3))
 })
 
 app.listen(5000, () => {
