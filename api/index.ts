@@ -52,14 +52,15 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     // res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
     try {
         const collectionName = "polls";
-        const collection = database.collection(collectionName);
+        await client.db("admin").command({ ping: 1 });
+        // const collection = database.collection(collectionName);
         // const posts = await (collection.find().toArray()) as Poll[];
 
         // res.status(200).send(JSON.stringify(posts, null, 3))
-    } catch {
-        console.log('error')
+    } catch (e) {
+        throw new Error('Unable to connect to mongo' + e)
     }
-    res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
+    res.status(200).send(JSON.stringify({name: 'brad', test: 'success'}, null, 3))
 })
 
 app.listen(3000, () => {
