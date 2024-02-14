@@ -19,17 +19,18 @@ export interface PollOption {
 
 const app = express();
 
+const uri = process.env.MONGODB_URI || '';
+
 app.get("/", (req, res) => {
-    res.send("Express on Vercel");
+    res.send("We the people API");
 });
 
 const baseUrl = '/api/v1';
 app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     console.log('here')
     res.setHeader('Content-Type', 'application/json');
-    // res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 
-    res.status(200).send(JSON.stringify({name: 'brad', test: 'please'}, null, 3))
+    res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
     // try {
     //     const collectionName = "polls";
     //     const collection = database.collection(collectionName);
