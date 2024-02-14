@@ -50,22 +50,22 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
 
     // res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
-    try {
-        await client.connect();
-        await client.db("we-the-people").command({ ping: 1 });
-        // const collectionName = "polls";
-        // const collection = database.collection(collectionName);
-        // const posts = await (collection.find().toArray()) as Poll[];
-
-        // res.status(200).send(JSON.stringify(posts, null, 3))
-    } catch (e) {
-        throw new Error('Unable to connect to mongo' + e)
-    }
+    // try {
+    //     await client.connect();
+    //     await client.db("we-the-people").command({ ping: 1 });
+    //     // const collectionName = "polls";
+    //     // const collection = database.collection(collectionName);
+    //     // const posts = await (collection.find().toArray()) as Poll[];
+    //
+    //     // res.status(200).send(JSON.stringify(posts, null, 3))
+    // } catch (e) {
+    //     throw new Error('Unable to connect to mongo' + e)
+    // }
     res.status(200).send(JSON.stringify({name: 'brad', test: 'success'}, null, 3))
 })
 
-app.listen(3000, () => {
-    console.log("Running on port 3000.");
+app.listen(5000, () => {
+    console.log("Running on port 5000.");
 });
 
 // Export the Express API
