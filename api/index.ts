@@ -27,7 +27,7 @@ const baseUrl = '/api/v1';
 app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     console.log('here')
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+    // res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 
     res.status(200).send(JSON.stringify({name: 'brad', test: 'please'}, null, 3))
     // try {
