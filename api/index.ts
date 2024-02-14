@@ -30,16 +30,16 @@ const client: MongoClient = new MongoClient(uri, {
     }
 });
 
-let conn;
-try {
-    // Connect the client to the server	(optional starting in v4.7)
-    conn = client.connect();
-} catch (e) {
-    console.error(e);
-}
+// let conn;
+// try {
+//     // Connect the client to the server	(optional starting in v4.7)
+//     conn = client.connect();
+// } catch (e) {
+//     console.error(e);
+// }
 
 const dbName = "we-the-people";
-const database = client.db(dbName);
+// const database = client.db(dbName);
 
 app.get("/", (req, res) => {
     res.send("We the people API!");
@@ -51,8 +51,9 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
 
     // res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
     try {
-        const collectionName = "polls";
+        await client.connect();
         await client.db("admin").command({ ping: 1 });
+        // const collectionName = "polls";
         // const collection = database.collection(collectionName);
         // const posts = await (collection.find().toArray()) as Poll[];
 
