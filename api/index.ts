@@ -41,7 +41,7 @@ const dbName = "we-the-people";
 const database = client.db(dbName);
 
 app.get("/", (req, res) => {
-    res.send("We the people API");
+    res.send("We the people API!");
 });
 
 const baseUrl = '/api/v1';
