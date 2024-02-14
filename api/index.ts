@@ -1,5 +1,6 @@
 import express, {Request, Response} from 'express'
 import {Document, MongoClient, ServerApiVersion, WithId} from "mongodb";
+import { BSON, EJSON, ObjectId } from 'bson';
 
 interface Poll extends WithId<Document> {
     id: string;
@@ -52,7 +53,7 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
     try {
         const collectionName = "polls";
         const collection = database.collection(collectionName);
-        const posts = await (collection.find().toArray()) as Poll[];
+        const posts = await (BSON.EJSON.deserialize(collection.find().toArray())) as Poll[];
 
         // res.status(200).send(JSON.stringify(posts, null, 3))
     } catch {
