@@ -26,7 +26,10 @@ try {
 const dbName = "we-the-people";
 const database = client.db(dbName);
 
+const cors = require('cors');
 const app: Express = express();
+
+app.use(cors());
 app.use(express.json());
 
 const Root: "/" = "/";
