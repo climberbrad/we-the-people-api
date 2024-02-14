@@ -54,10 +54,11 @@ app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
         const collection = database.collection(collectionName);
         const posts = await (collection.find().toArray()) as Poll[];
 
-        res.status(200).send(JSON.stringify(posts, null, 3))
+        // res.status(200).send(JSON.stringify(posts, null, 3))
     } catch {
         console.log('error')
     }
+    res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
 })
 
 app.listen(3000, () => {
