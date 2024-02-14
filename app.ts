@@ -1,8 +1,8 @@
 import {Request, Response, Express} from "express";
 import express from 'express'
-import {WithId, Document} from "mongodb";
 import bodyParser from "body-parser";
 import database from "./Database/dbConfig";
+import {Poll, Vote} from "./models/Model";
 
 const cors = require('cors');
 const app: Express = express();
@@ -21,28 +21,7 @@ let connections: any = [];
 
 const baseUrl = '/api/v1';
 
-interface Poll extends WithId<Document> {
-    id: string;
-    startDate: number;
-    question: string;
-    options: PollOption[];
-    author: string;
-    status: string;
-}
 
-export interface PollOption {
-    id: string;
-    text: string;
-    votes: number;
-}
-
-interface Vote extends WithId<Document> {
-    id: string;
-    pollId: string;
-    userId: string;
-    optionId: string;
-    date: number;
-}
 
 // Route.
 app.get(Root, async (req: Request, res: Response) => {
