@@ -46,7 +46,6 @@ app.get("/", (req, res) => {
 
 const baseUrl = '/api/v1';
 app.get(`${baseUrl}/polls`, async (req: Request, res: Response) => {
-    console.log('here')
     res.setHeader('Content-Type', 'application/json');
 
     // res.status(200).send(JSON.stringify({name: 'brad', test: uri}, null, 3))
