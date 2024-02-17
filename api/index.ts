@@ -36,7 +36,6 @@ const Root: "/" = "/";
 const baseUrl = '/api/v1';
 
 app.get(Root, async (req: Request, res: Response) => {
-    console.log('here')
     res.status(200)
     res.setHeader('Content-Type', 'application/json');
     res.json({
@@ -83,6 +82,33 @@ app.post(`${baseUrl}/polls`, async (req: Request, res: Response) => {
         await collection.insertOne(newPoll)
 
         res.status(200).send(newPoll)
+    } catch (e) {
+        console.log('error', e)
+    }
+})
+
+app.put(`${baseUrl}/polls/:id`, async (req: Request, res: Response) => {
+    // res.setHeader('Content-Type', 'application/json');
+    try {
+        const pollId = req.params.id
+        const updatedPoll: Poll = req.body as Poll;
+
+        if (pollId !== updatedPoll.id) {
+            throw new Error('Update ID and url path param do not match')
+        }
+
+        const collectionName = "polls";
+        const collection = database.collection(collectionName);
+        const existingDocument = await (collection.findOne({id: pollId}));
+
+        if (existingDocument) {
+            await collection.findOneAndReplace(
+                {_id: {$eq: existingDocument._id}}, {...updatedPoll, _id: existingDocument._id}, {upsert: true}
+            )
+            res.status(200).send(updatedPoll);
+        }
+        res.status(500);
+
     } catch (e) {
         console.log('error', e)
     }

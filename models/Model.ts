@@ -7,6 +7,15 @@ export interface Poll extends WithId<Document> {
     options: PollOption[];
     author: string;
     status: string;
+    comments: PollComment[];
+    votes: Vote[];
+}
+
+export type PollComment = {
+    comment: string;
+    userId: string;
+    pollId: string;
+    date: number;
 }
 
 export interface PollOption {
