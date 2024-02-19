@@ -1,7 +1,7 @@
 import express, {Request, Response, Express} from "express";
 import {configDotenv} from "dotenv";
 import {MongoClient, ServerApiVersion} from "mongodb";
-import {Poll, Vote} from "../models/Model";
+import {Favorite, Poll, Vote} from "../models/Model";
 
 configDotenv()
 
@@ -114,6 +114,35 @@ app.put(`${baseUrl}/polls/:id`, async (req: Request, res: Response) => {
     }
 })
 
+app.get(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+    try {
+        const collectionName = "favorites";
+        const collection = database.collection(collectionName);
+        const votes = await (collection.find().toArray()) as Vote[];
+
+        res.status(200).send(JSON.stringify(votes, null, 3))
+    } catch {
+        console.log('error')
+    }
+})
+
+app.post(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
+    // res.setHeader('Content-Type', 'application/json');
+    try {
+        const newVote: Favorite = req.body as Favorite;
+
+        const collectionName = "favorites";
+        const collection = database.collection(collectionName);
+        await collection.insertOne(newVote)
+
+        res.status(200).send(newVote)
+    } catch (e) {
+        console.log('error', e)
+    }
+})
+
 app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
@@ -142,7 +171,6 @@ app.post(`${baseUrl}/votes`, async (req: Request, res: Response) => {
         console.log('error', e)
     }
 })
-
 
 const PORT = process.env.PORT;
 
