@@ -3,6 +3,7 @@ import express from 'express'
 import bodyParser from "body-parser";
 import database from "./Database/dbConfig";
 import {Favorite, Poll, Vote} from "./models/Model";
+import {factory} from "ts-jest/dist/transformers/hoist-jest";
 
 const cors = require('cors');
 const app: Express = express();
@@ -120,19 +121,29 @@ app.get(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
 app.post(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
     // res.setHeader('Content-Type', 'application/json');
     try {
-        const newVote: Favorite = req.body as Favorite;
+        const favorite: Favorite = req.body as Favorite;
 
         const collectionName = "favorites";
         const collection = database.collection(collectionName);
-        await collection.insertOne(newVote)
 
-        res.status(200).send(newVote)
+        const query = {userId: {$eq: favorite.userId}}
+        const existingDocument = await (collection.findOne({userId: favorite.userId}));
+        if (existingDocument) {
+            await collection.findOneAndReplace(
+                {_id: {$eq: existingDocument._id}}, {...favorite, _id: existingDocument._id}, {upsert: true}
+            )
+        } else {
+            await collection.insertOne(favorite)
+        }
+
+        res.status(200).send(favorite)
     } catch (e) {
         console.log('error', e)
     }
 })
 
 app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
+    console.log('GET FAVORITE')
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     try {
@@ -160,7 +171,6 @@ app.post(`${baseUrl}/votes`, async (req: Request, res: Response) => {
         console.log('error', e)
     }
 })
-
 
 
 let Server = app.listen(PORT, () => {

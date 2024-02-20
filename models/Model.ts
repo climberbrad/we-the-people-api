@@ -1,10 +1,8 @@
-import {Document, WithId} from "mongodb";
+import {Document, ObjectId, WithId} from "mongodb";
 
 export type Favorite = {
-    id: string;
     userId: string;
-    pollId: string;
-    date: number;
+    favoritePolls: string[];
 }
 export interface Poll extends WithId<Document> {
     id: string;

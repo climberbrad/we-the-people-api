@@ -1,4 +1,4 @@
-import express, {Request, Response, Express} from "express";
+import express, {Request, Response, Express, query} from "express";
 import {configDotenv} from "dotenv";
 import {MongoClient, ServerApiVersion} from "mongodb";
 import {Favorite, Poll, Vote} from "../models/Model";
@@ -131,17 +131,42 @@ app.get(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
 app.post(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
     // res.setHeader('Content-Type', 'application/json');
     try {
-        const newVote: Favorite = req.body as Favorite;
+        const favorite: Favorite = req.body as Favorite;
 
         const collectionName = "favorites";
         const collection = database.collection(collectionName);
-        await collection.insertOne(newVote)
 
-        res.status(200).send(newVote)
+        const query = {userId: {$eq: favorite.userId}}
+        const existingDocument = await (collection.findOne({userId: favorite.userId}));
+        if (existingDocument) {
+            await collection.findOneAndReplace(
+                {_id: {$eq: existingDocument._id}}, {...favorite, _id: existingDocument._id}, {upsert: true}
+            )
+        } else {
+            await collection.insertOne(favorite)
+        }
+
+        res.status(200).send(favorite)
     } catch (e) {
         console.log('error', e)
     }
 })
+
+// app.delete(`${baseUrl}/favorites/:id`, async (req: Request, res: Response) => {
+//     // res.setHeader('Content-Type', 'application/json');
+//     console.log('Index delete')
+//     try {
+//         const id = req.params.id
+//
+//         const collectionName = "favorites";
+//         const collection = database.collection(collectionName);
+//         await collection.deleteOne({id: id})
+//
+//         res.status(200)
+//     } catch (e) {
+//         console.log('error', e)
+//     }
+// })
 
 app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
