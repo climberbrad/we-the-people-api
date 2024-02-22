@@ -35,6 +35,27 @@ app.use(express.json());
 const Root: "/" = "/";
 const baseUrl = '/api/v1';
 
+const updatePoll = async (update: Poll): Promise<boolean> => {
+    try {
+        const collectionName = "polls";
+        const collection = database.collection(collectionName);
+        const existingDocument = await (collection.findOne({id: update.id}));
+
+        if (existingDocument) {
+            await collection.findOneAndReplace(
+                {_id: {$eq: existingDocument._id}}, {...update, _id: existingDocument._id}, {upsert: false}
+            )
+        }
+
+        return true
+
+    } catch (e) {
+        console.log('error', e)
+    }
+
+    return false
+}
+
 app.get(Root, async (req: Request, res: Response) => {
     res.status(200)
     res.setHeader('Content-Type', 'application/json');
@@ -136,7 +157,6 @@ app.post(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
         const collectionName = "favorites";
         const collection = database.collection(collectionName);
 
-        const query = {userId: {$eq: favorite.userId}}
         const existingDocument = await (collection.findOne({userId: favorite.userId}));
         if (existingDocument) {
             await collection.findOneAndReplace(
@@ -152,37 +172,25 @@ app.post(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
     }
 })
 
-app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-    try {
-        const collectionName = "votes";
-        const collection = database.collection(collectionName);
-        const votes = await (collection.find().toArray()) as Vote[];
-
-        res.status(200).send(JSON.stringify(votes, null, 3))
-    } catch {
-        console.log('error')
-    }
-})
-
-app.post(`${baseUrl}/votes`, async (req: Request, res: Response) => {
-    // res.setHeader('Content-Type', 'application/json');
-    try {
-        const newVote: Vote = req.body as Vote;
-
-        const collectionName = "votes";
-        const collection = database.collection(collectionName);
-        await collection.insertOne(newVote)
-
-        res.status(200).send(newVote)
-    } catch (e) {
-        console.log('error', e)
-    }
-})
+// const ETL = async () => {
+//     console.log('---running ETL---')
+//     const pollCollection = database.collection("polls");
+//     const posts = await (pollCollection.find().toArray()) as Poll[];
+//
+//     const voteCollection = database.collection("votes");
+//     const votes = await (voteCollection.find().toArray()) as Vote[];
+//
+//     posts.map(poll => {
+//         const existingVotes = votes.filter(vote => vote.pollId === poll.id)
+//         const updatedPoll = {...poll, votes: [...existingVotes]}
+//
+//         updatePoll(updatedPoll)
+//     })
+// }
 
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-    console.log("Server is running on port " + PORT);
+    console.log("We the people API is running on port " + PORT);
 });
+
