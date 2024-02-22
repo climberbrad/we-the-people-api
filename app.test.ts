@@ -3,7 +3,7 @@
 const request = require('supertest');
 
 // const app = require('./app');
-const { Server, app } = require("./app")
+const { Server, app } = require(".index/index")
 
 describe("Test app component", () => {
 

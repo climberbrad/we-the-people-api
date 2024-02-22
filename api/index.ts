@@ -152,22 +152,6 @@ app.post(`${baseUrl}/favorites`, async (req: Request, res: Response) => {
     }
 })
 
-// app.delete(`${baseUrl}/favorites/:id`, async (req: Request, res: Response) => {
-//     // res.setHeader('Content-Type', 'application/json');
-//     console.log('Index delete')
-//     try {
-//         const id = req.params.id
-//
-//         const collectionName = "favorites";
-//         const collection = database.collection(collectionName);
-//         await collection.deleteOne({id: id})
-//
-//         res.status(200)
-//     } catch (e) {
-//         console.log('error', e)
-//     }
-// })
-
 app.get(`${baseUrl}/votes`, async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
